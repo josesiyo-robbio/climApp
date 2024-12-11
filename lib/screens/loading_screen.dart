@@ -33,17 +33,14 @@ class _LoadingScreenState extends State<LoadingScreen>
       print('Latitud: ${position.latitude}, Longitud: ${position.longitude}');
 
       final url =
-          'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=197dc5fbe2d88d2dbc8268813a162e93';
+          'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=197dc5fbe2d88d2dbc8268813a162e93&units=metric';
       NetworkService networkService = NetworkService(url);
       var weatherData = await networkService.getData();
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return LocationScreen();
+        return LocationScreen(locationWeather: weatherData,);
       } ));
 
-      double temp;
-      int condition;
-      String cityName;
 
       return position;
     } catch (e) {

@@ -1,12 +1,54 @@
+import 'package:climapp/services/weather_service.dart';
 import 'package:flutter/material.dart';
 import '../utilities/constants.dart';
 
-class LocationScreen extends StatefulWidget {
+class LocationScreen extends StatefulWidget
+{
+  final locationWeather;
+  LocationScreen({this.locationWeather});
+
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _LocationScreenState extends State<LocationScreen>
+{
+  WeatherModel weatherModel = WeatherModel();
+  late int temp = 0;
+  late int condition = 0;
+  late int temperature = 0;
+  late String cityName = '';
+  late String weatherIcon = '';
+  late String weatherMessage = '';
+  late String weatherCity = '';
+
+  @override
+  void initState()
+  {
+    super.initState();
+    updateUI(widget.locationWeather);
+  }
+
+  void updateUI (dynamic weatherData)
+  {
+    setState(() {
+      print('Weather Data: $weatherData');
+
+      double temp =  weatherData['main']['temp'];
+      temperature = temp.toInt();
+      var condition = weatherData['weather'][0]['id'];
+      var cityName =weatherData['name'];
+      weatherCity = cityName;
+      print('temperaTURAXXX $temp');
+
+      weatherIcon=weatherModel.getWeatherIcon(condition);
+      weatherMessage =  weatherModel.getMessage(temperature);
+
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +91,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '32°',
+                      '$temperature °',
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      weatherIcon,
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -62,7 +104,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  '$weatherMessage in $weatherCity',
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),

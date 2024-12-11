@@ -8,11 +8,9 @@ class NetworkService
   NetworkService(this.url);
   late final String url;
 
-  Future<void> getData()
+  Future<dynamic> getData()
   async
   {
-
-
     try
     {
       final response = await http.get(Uri.parse(url));
